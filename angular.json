@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sga_cliente_gestionar_periodo_mf": {
+    "sga-gestionar-periodo-mf": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,8 +17,9 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "outputPath": "dist/sga_cliente_gestionar_periodo_mf",
+            "outputPath": "dist/sga-gestionar-periodo-mf",
             "index": "src/index.html",
+            "main": "src/main.single-spa.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -31,12 +32,12 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
-            "main": "src/main.single-spa.ts",
+            "scripts": [
+            ],
             "customWebpackConfig": {
               "path": "extra-webpack.config.js",
               "libraryName": "sga-gestionar-periodo-mf",
-              "libraryTarget": "system"
+              "libraryTarget": "umd"
             },
             "deployUrl": "http://localhost:4206/"
           },
@@ -54,37 +55,28 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "none",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.production.ts"
-                }
-              ]
+              "outputHashing": "none"
             },
             "development": {
+              "buildOptimizer": false,
               "optimization": false,
+              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "outputHashing": "none",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
-                }
-              ]
+              "namedChunks": true,
+              "outputHashing": "none"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sga_cliente_gestionar_periodo_mf:build:production"
+              "browserTarget": "sga-gestionar-periodo-mf:build:production"
             },
             "development": {
-              "buildTarget": "sga_cliente_gestionar_periodo_mf:build:development"
+              "browserTarget": "sga-gestionar-periodo-mf:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -92,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "sga_cliente_gestionar_periodo_mf:build"
+            "browserTarget": "sga-gestionar-periodo-mf:build"
           }
         },
         "test": {
