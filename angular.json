@@ -39,7 +39,7 @@
               "libraryName": "sga-gestionar-periodo-mf",
               "libraryTarget": "umd"
             },
-            "deployUrl": "http://localhost:4206/"
+            "deployUrl": "http://localhost:4205/"
           },
           "configurations": {
             "production": {
