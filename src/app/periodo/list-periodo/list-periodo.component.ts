@@ -9,7 +9,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTabGroup } from '@angular/material/tabs';
 import { HttpErrorResponse } from '@angular/common/http';
 import * as moment from 'moment';
-import { PopUpManager } from 'src/app/managers/popUpManager';
+import { PopUpManager } from 'src/app/managers/popup-manager';
 
 @Component({
   selector: 'list-periodo',

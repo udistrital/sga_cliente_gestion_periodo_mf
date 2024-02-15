@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class CustomMatPaginatorIntl extends MatPaginatorIntl {
-  constructor() {
+  constructor(private translate: TranslateService) {
     super();  
 
     this.getAndInitTranslations();
   }
 
   getAndInitTranslations() {
-    this.itemsPerPageLabel = "";
-    this.nextPageLabel = "";
-    this.previousPageLabel = "";
-    this.firstPageLabel = "";
-    this.lastPageLabel = "";
+    this.itemsPerPageLabel = this.translate.instant('GLOBAL.elementos');
+    this.nextPageLabel = this.translate.instant('GLOBAL.siguiente');
+    this.previousPageLabel = this.translate.instant('GLOBAL.previa');
+    this.firstPageLabel = this.translate.instant('GLOBAL.primera');
+    this.lastPageLabel = this.translate.instant('GLOBAL.ultima');
     this.changes.next();
   }
 

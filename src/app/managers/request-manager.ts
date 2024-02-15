@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
-import { HttpErrorManager } from './errorManager'
+import { HttpErrorManager } from './error-manager'
 
 /**
  * This class manage the http connections with internal REST services. Use the response format {

@@ -23,19 +23,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ListPeriodoComponent } from './periodo/list-periodo/list-periodo.component';
-import { CrudPeriodoComponent } from './periodo/crud-periodo/crud-periodo.component';
 import { ParametrosService } from 'src/data/parametros.service';
+import { EmptyRouteComponent } from './empty-route/empty-route.component';
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, environment.apiUrl + 'assets/i18n/', '.json');
 }
 
 @NgModule({
   declarations: [
     AppComponent,
-    ListPeriodoComponent,
-    CrudPeriodoComponent
+    EmptyRouteComponent
   ],
   imports: [
     MatTabsModule,
@@ -54,7 +52,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatDatepickerModule,
     MatProgressSpinnerModule,
     MatNativeDateModule,
-    MatTableModule, 
+    MatTableModule,
     MatPaginatorModule,
     MatDialogModule,
     CommonModule,
@@ -71,13 +69,12 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }),
   ],
-  exports:[
+  exports: [
     MatDialogModule,
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef, useValue: {} },
-    ParametrosService
+    { provide: MatDialogRef, useValue: {} }
   ],
   bootstrap: [AppComponent]
 })

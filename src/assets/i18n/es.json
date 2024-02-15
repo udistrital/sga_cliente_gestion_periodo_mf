@@ -31,7 +31,16 @@
         "operacion_exitosa": "Operación exitosa",
         "codigo_abreviacion": "Código abreviación",
         "placeholder_codigo_abreviacion": "ej: ACADE",
-        "error_codigo_abreviacion": "Por favor ingrese el código de abreviación"
+        "error_codigo_abreviacion": "Por favor ingrese el código de abreviación",
+        "error": "Error",
+        "elementos": "Elementos por página",
+        "siguiente": "Siguiente",
+        "previa": "Anterior",
+        "primera": "Primer página",
+        "ultima": "Última página",
+        "nombre": "Nombre",
+        "editar": "Editar",
+        "eliminar": "Eliminar"
     },
     "periodo": {
         "seguro_actualizar_periodo": "¿Está seguro de actualizar este período?",
@@ -68,5 +77,8 @@
     },
     "paginator": {
         "items_pagina": "Elementos por página"
+    },
+    "ERROR": {
+        "undefined": "Ha ocurrido un error inesperado"
     }
 }

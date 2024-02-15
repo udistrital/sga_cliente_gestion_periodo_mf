@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RequestManager } from '../app/managers/requestManager';
+import { RequestManager } from '../app/managers/request-manager';
 
 @Injectable()
 export class ParametrosService {

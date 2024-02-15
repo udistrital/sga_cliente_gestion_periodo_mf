@@ -58,7 +58,7 @@
 
             <div class="row">
                 <div class="col-12 ml-auto">
-                    <button class="float-right" mat-button type="submit">{{ 'GLOBAL.guardar' | translate }} </button>
+                    <button class="float-right" mat-button type="submit" [disabled]="periodoForm.invalid">{{ 'GLOBAL.guardar' | translate }} </button>
                 </div>
             </div>
         </form>

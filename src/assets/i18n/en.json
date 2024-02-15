@@ -31,7 +31,15 @@
         "operacion_exitosa": "Successfull operation",
         "codigo_abreviacion": "Abbreviation Code",
         "placeholder_codigo_abreviacion": "E.g.: ACADE",
-        "error_codigo_abreviacion": "Please insert the abbreviation code"
+        "error_codigo_abreviacion": "Please insert the abbreviation code",
+        "elementos": "Items per page",
+        "siguiente": "Next",
+        "previa": "Previos",
+        "primera": "First page",
+        "ultima": "Last page",
+        "nombre": "Name",
+        "editar": "Edit",
+        "eliminar": "Delete"
     },
     "periodo": {
         "seguro_actualizar_periodo": "Are you sure you update this period?",
@@ -68,5 +76,8 @@
     },
     "paginator": {
         "items_pagina": "Item per page"
+    },
+    "ERROR": {
+        "undefined": "An unexpected error has ocurred."
     }
 }
