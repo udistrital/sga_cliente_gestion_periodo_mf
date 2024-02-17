@@ -6,8 +6,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class HttpErrorManager {
-  constructor(
-   ) {}
+  constructor() {}
 
   public handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -23,7 +22,7 @@ export class HttpErrorManager {
     }
     // return an observable with a user-facing error message
     if(error.status === 200){
-      return []
+      return [];
     }else {
       return throwError(error.error/* {
         status: error.status,

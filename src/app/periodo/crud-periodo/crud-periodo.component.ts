@@ -99,6 +99,10 @@ export class CrudPeriodoComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.periodoForm.invalid) {
+      return;
+    }
+
     let title = this.periodo_id == null ? 'GLOBAL.registrar' : 'GLOBAL.actualizar';
     let message = this.periodo_id == null ? 'periodo.seguro_continuar_registrar_periodo' : 'periodo.seguro_actualizar_periodo';
     this.popUpManager

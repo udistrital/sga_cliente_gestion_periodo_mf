@@ -1,7 +1,7 @@
-<div class="col-md-12 col-lg-12 periodo-container">
+<div class="periodo-container">
     <mat-tab-group #tabGroup>
-        <mat-tab label="{{ 'GLOBAL.lista' | translate }}">
-            <div class="example-header">
+        <mat-tab class="tab-bold" label="{{ 'GLOBAL.lista' | translate | uppercase }}">
+            <div class="example-header float-right">
                 <mat-form-field>
                     <mat-label>{{ "GLOBAL.buscar" | translate }}</mat-label>
                     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ 'GLOBAL.buscar' | translate }}">
@@ -49,9 +49,9 @@
                         {{ 'periodo.explicacion' | translate }}
                     </p>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <mat-form-field style="width: 70%;">
+                    <div fxLayout="row">
+                        <div fxFlex="50">
+                            <mat-form-field style="width: 90%;">
                                 <mat-label>{{ 'GLOBAL.ano' | translate }} :</mat-label>
                                 <mat-select [(ngModel)]="opcionSeleccionadoAno" (ngModelChange)="capturarAno()">
                                     <mat-option> {{ 'periodo.seleccion_ano' | translate }}</mat-option>
@@ -61,8 +61,8 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="col-sm-6">
-                            <mat-form-field style="width: 70%;">
+                        <div fxFlex="50">
+                            <mat-form-field style="width: 90%;">
                                 <mat-label>{{ 'GLOBAL.periodo' | translate }} :</mat-label>
                                 <mat-select [(ngModel)]="opcionSeleccionadoPeriodo" (ngModelChange)="capturarPeriodo()">
                                     <mat-option>{{ 'periodo.seleccion_periodo' | translate }}</mat-option>
@@ -74,13 +74,15 @@
                         </div>
                     </div>
                 </mat-card-content>
-                <mat-card-actions style="text-align: center;">
-                    <button mat-button class="item1" (click)="ActivarPeriodo()" type="button" >{{ 'periodo.buton_habilitar' | translate }}</button>
-                    <button mat-raised-button class="item1" (click)="DeshabilitarPeriodo()" type="button" >{{ 'periodo.buton_deshabilitar' | translate }}</button>
+                <mat-card-actions style="display: block;">
+                    <div style="display: flex; justify-content: center;">
+                        <button mat-flat-button color="primary" class="boton-primary" (click)="ActivarPeriodo()" type="button" >{{ 'periodo.buton_habilitar' | translate }}</button>
+                        <button mat-flat-button color="secondary" class="boton-secondary" (click)="DeshabilitarPeriodo()" type="button" >{{ 'periodo.buton_deshabilitar' | translate }}</button>
+                    </div>
                 </mat-card-actions>
             </mat-card>
         </mat-tab>
-        <mat-tab label="{{ 'GLOBAL.formulario' | translate }}">
+        <mat-tab class="tab-bold" label="{{ 'GLOBAL.formulario' | translate | uppercase }}">
             <crud-periodo [periodo_id]="uid" (eventChange)="onChange($event)"></crud-periodo>
             <button class="float-left" mat-button (click)="activetab()"> <i class="nb-arrow-dropleft"></i> {{ 'GLOBAL.regresar' | translate }} </button>
         </mat-tab>

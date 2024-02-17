@@ -89,7 +89,15 @@ export class ListPeriodoComponent implements OnInit {
         res => {
           const r = <any>res;
           if (res !== null && r.Status === '200') {
-            this.year = <any[]>res['Data'];
+            let year = <any[]>res['Data'];
+            let conjunto: Set<any> = new Set();
+            year.forEach(function (value) {
+              conjunto.add(value.Year);
+            });
+            let listaSinRepetidos: number[] = Array.from(conjunto);
+            this.year = listaSinRepetidos.map(numero => {
+              return { Year: numero };
+            });
           }
         },
         (error: HttpErrorResponse) => {

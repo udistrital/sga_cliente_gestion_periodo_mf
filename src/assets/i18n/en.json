@@ -78,6 +78,8 @@
         "items_pagina": "Item per page"
     },
     "ERROR": {
-        "undefined": "An unexpected error has ocurred."
+        "undefined": "An unexpected error has ocurred.",
+        "rol_insuficiente_titulo": "The user does not have permissions",
+        "rol_insuficiente": "The user does not have sufficient permissions to use the system ."
     }
 }

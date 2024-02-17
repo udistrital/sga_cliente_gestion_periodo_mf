@@ -21,14 +21,13 @@ export class RequestManager {
     const acces_token = window.localStorage.getItem('access_token');
     if (acces_token !== null) {
       this.httpOptions = {
-        // headers: new HttpHeaders({
-        //   'Content-Type': 'application/json',
-        //   'Authorization': `Bearer ${acces_token}`,
-        // }),
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${acces_token}`,
+        }),
       }
     }
   }
-
 
   /**
    * Use for set the source path of the service (service's name must be present at src/environment/environment.ts)
@@ -38,23 +37,20 @@ export class RequestManager {
     this.path = environment[service];
   }
 
-
   /**
    * Perform a GET http request
    * @param endpoint service's end-point
    * @param params (an Key, Value object with que query params for the request)
    * @returns Observable<any>
    */
-  get(endpoint) {
-
+  get(endpoint: string) {
     return this.http.get<any>(`${this.path}${endpoint}`, this.httpOptions).pipe(
       map(
         (res) => {
           if (res.hasOwnProperty('Body')) {
             return res['Body'];
-          } else {
-            return res;
           }
+          return res;
         },
       ),
       catchError(this.errManager.handleError.bind(this)),
@@ -67,7 +63,7 @@ export class RequestManager {
    * @param element data to send as JSON
    * @returns Observable<any>
    */
-  post(endpoint, element) {
+  post(endpoint: string, element: string) {
     return this.http.post<any>(`${this.path}${endpoint}`, element, this.httpOptions).pipe(
       catchError(this.errManager.handleError),
     );
@@ -79,10 +75,12 @@ export class RequestManager {
    * @param element data to send as JSON
    * @returns Observable<any>
    */
-  post_file(endpoint, element) {
-    return this.http.post<any>(`${this.path}${endpoint}`, element, {    headers: new HttpHeaders({
-      'Content-Type': 'multipart/form-data',
-  })}).pipe(
+  post_file(endpoint: string, element: string) {
+    return this.http.post<any>(`${this.path}${endpoint}`, element, {
+      headers: new HttpHeaders({
+        'Content-Type': 'multipart/form-data',
+      })
+    }).pipe(
       catchError(this.errManager.handleError),
     );
   }
@@ -93,7 +91,7 @@ export class RequestManager {
    * @param element data to send as JSON, With the id to UPDATE
    * @returns Observable<any>
    */
-  put(endpoint, element) {
+  put(endpoint: string, element: any) {
     const path = (element.Id) ? `${this.path}${endpoint}/${element.Id}` : `${this.path}${endpoint}`;
     return this.http.put<any>(path, element, this.httpOptions).pipe(
       catchError(this.errManager.handleError),
@@ -106,7 +104,7 @@ export class RequestManager {
    * @param id element's id for remove
    * @returns Observable<any>
    */
-  delete(endpoint, id) {
+  delete(endpoint: string, id: string) {
     return this.http.delete<any>(`${this.path}${endpoint}/${id}`, this.httpOptions).pipe(
       catchError(this.errManager.handleError),
     );

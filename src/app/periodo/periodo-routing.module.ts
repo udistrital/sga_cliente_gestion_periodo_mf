@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { ListPeriodoComponent } from "./list-periodo/list-periodo.component";
 import { CrudPeriodoComponent } from "./crud-periodo/crud-periodo.component";
 import { PeriodoComponent } from "./periodo.component";
+import { AuthGuard } from "../_guards/auth.guard";
 
 const routes: Routes = [{
     path: '',
@@ -10,13 +11,13 @@ const routes: Routes = [{
     children: [
         {
             path: "list-periodo",
-            component: ListPeriodoComponent
-        //    canActivate: [AuthGuard],
+            component: ListPeriodoComponent,
+            //canActivate: [AuthGuard],
           },
           {
             path: "crud-periodo",
-            component: CrudPeriodoComponent
-        //    canActivate: [AuthGuard],
+            component: CrudPeriodoComponent,
+            //canActivate: [AuthGuard],
           }
     ]
 }]
