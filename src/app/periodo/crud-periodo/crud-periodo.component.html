@@ -4,7 +4,7 @@
     <form [formGroup]="periodoForm" (ngSubmit)="onSubmit()">
         <div fxLayout="row">
             <div fxFlex="50">
-                <mat-form-field>
+                <mat-form-field style="width: 90%;">
                     <mat-label>{{ 'GLOBAL.ano' | translate }}</mat-label>
                     <input matInput placeholder="{{ 'GLOBAL.placeholder_ano' | translate }}"
                         formControlName="year" class="form-control"
@@ -15,7 +15,7 @@
                 </mat-form-field>
             </div>
             <div fxFlex="50">
-                <mat-form-field>
+                <mat-form-field style="width: 90%;">
                     <mat-label>{{ 'GLOBAL.periodo' | translate }}</mat-label>
                     <input matInput placeholder="{{ 'GLOBAL.placeholder_periodo' | translate }}"
                         formControlName="periodo" class="form-control"
@@ -28,7 +28,7 @@
         </div>
         <div fxLayout="row">
             <div fxFlex="50">
-                <mat-form-field>
+                <mat-form-field style="width: 90%;">
                     <mat-label>{{ 'GLOBAL.fecha_inicio' | translate }}</mat-label>
                     <input matInput [matDatepicker]="pickerFechaInicio" placeholder="{{ 'GLOBAL.placeholder_fecha_inicio' | translate }}"
                         formControlName="fechaInicio" class="form-control"
@@ -41,7 +41,7 @@
                 </mat-form-field>
             </div>
             <div fxFlex="50">
-                <mat-form-field>
+                <mat-form-field style="width: 90%;">
                     <mat-label>{{ 'GLOBAL.fecha_fin' | translate }}</mat-label>
                     <input matInput [matDatepicker]="pickerFechaFin" placeholder="{{ 'GLOBAL.placeholder_fecha_fin' | translate }}"
                         formControlName="fechaFin" class="form-control"

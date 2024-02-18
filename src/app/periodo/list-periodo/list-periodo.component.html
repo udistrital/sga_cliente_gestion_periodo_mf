@@ -84,7 +84,7 @@
         </mat-tab>
         <mat-tab class="tab-bold" label="{{ 'GLOBAL.formulario' | translate | uppercase }}">
             <crud-periodo [periodo_id]="uid" (eventChange)="onChange($event)"></crud-periodo>
-            <button class="float-left" mat-button (click)="activetab()"> <i class="nb-arrow-dropleft"></i> {{ 'GLOBAL.regresar' | translate }} </button>
+            <button mat-flat-button color="primary" class="boton-primary float-left" (click)="activetab()"> <mat-icon>keyboard_arrow_left</mat-icon> {{ 'GLOBAL.regresar' | translate }} </button>
         </mat-tab>
     </mat-tab-group>
 </div>
