@@ -1,0 +1,88 @@
+<div class="col-md-12 col-lg-12 periodo-container">
+    <mat-tab-group #tabGroup>
+        <mat-tab label="{{ 'GLOBAL.lista' | translate }}">
+            <div class="example-header">
+                <mat-form-field>
+                    <mat-label>{{ "GLOBAL.buscar" | translate }}</mat-label>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ 'GLOBAL.buscar' | translate }}">
+                </mat-form-field>
+            </div>
+
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" style="width: 100%;">
+                <ng-container *ngFor="let columna of displayedColumns" [matColumnDef]="columna">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ nombresColumnas[columna] | translate }}</th>
+                    <td mat-cell *matCellDef="let fila; let i = index"
+                        [ngClass]="{'row-par': i % 2 === 0, 'row-impar': i % 2 !== 0, 'row-hover': hoverIndex === i}"
+                        (mouseover)="hoverIndex = i"
+                        (mouseout)="hoverIndex = null">
+
+                        <ng-container *ngIf="columna !== 'acciones'">
+                            {{ formatValue(columna, fila[columna]) }}
+                        </ng-container>
+
+                        <ng-container *ngIf="columna === 'acciones'">
+                            <button mat-icon-button matTooltip="{{ 'GLOBAL.editar' | translate }}" (click)="onEdit(fila)">
+                            <mat-icon>edit_outline</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="{{ 'GLOBAL.eliminar' | translate }}" (click)="onDelete(fila)">
+                            <mat-icon>delete_outline</mat-icon>
+                            </button>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let fila; columns: displayedColumns;"></tr>
+            </table>
+    
+            <mat-paginator [pageSize]="5" [pageSizeOptions]="[]" showFirstLastButtons></mat-paginator>
+
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>{{ 'periodo.titulo' | translate }}</mat-card-title>
+                </mat-card-header>
+
+                <mat-card-content>
+                    <mat-card class="card-periodo">{{ 'periodo.subtitulo' | translate }}</mat-card>
+                    <br>
+                    <p>
+                        {{ 'periodo.explicacion' | translate }}
+                    </p>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <mat-form-field style="width: 70%;">
+                                <mat-label>{{ 'GLOBAL.ano' | translate }} :</mat-label>
+                                <mat-select [(ngModel)]="opcionSeleccionadoAno" (ngModelChange)="capturarAno()">
+                                    <mat-option> {{ 'periodo.seleccion_ano' | translate }}</mat-option>
+                                    <mat-option *ngFor="let item of year" [value]="item">
+                                        {{ item.Year }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6">
+                            <mat-form-field style="width: 70%;">
+                                <mat-label>{{ 'GLOBAL.periodo' | translate }} :</mat-label>
+                                <mat-select [(ngModel)]="opcionSeleccionadoPeriodo" (ngModelChange)="capturarPeriodo()">
+                                    <mat-option>{{ 'periodo.seleccion_periodo' | translate }}</mat-option>
+                                    <mat-option *ngFor="let item of periodo" [value]="item">
+                                        {{ item.Ciclo }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions style="text-align: center;">
+                    <button mat-button class="item1" (click)="ActivarPeriodo()" type="button" >{{ 'periodo.buton_habilitar' | translate }}</button>
+                    <button mat-raised-button class="item1" (click)="DeshabilitarPeriodo()" type="button" >{{ 'periodo.buton_deshabilitar' | translate }}</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-tab>
+        <mat-tab label="{{ 'GLOBAL.formulario' | translate }}">
+            <crud-periodo [periodo_id]="uid" (eventChange)="onChange($event)"></crud-periodo>
+            <button class="float-left" mat-button (click)="activetab()"> <i class="nb-arrow-dropleft"></i> {{ 'GLOBAL.regresar' | translate }} </button>
+        </mat-tab>
+    </mat-tab-group>
+</div>
