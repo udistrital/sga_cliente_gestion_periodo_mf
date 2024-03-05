@@ -1,66 +1,64 @@
-<div class="crud-periodo-container">
-    <fieldset [ngClass]="{'fieldseter':true}">
-        <legend> {{ 'GLOBAL.periodo' | translate }} </legend>
+<fieldset [ngClass]="{'fieldseter':true}">
+    <legend> {{ 'GLOBAL.periodo' | translate }} </legend>
 
-        <form [formGroup]="periodoForm" (ngSubmit)="onSubmit()">
-            <div class="row">
-                <div class="col-sm-6">
-                    <mat-form-field class="flex">
-                        <mat-label>{{ 'GLOBAL.ano' | translate }}</mat-label>
-                        <input matInput placeholder="{{ 'GLOBAL.placeholder_ano' | translate }}"
-                            formControlName="year" class="form-control"
-                            name="year" required type="number">
-                        <mat-error *ngIf="getControl('year').invalid">
-                            {{ getErrorMessage(getControl('year'), 'ano', 1948, 3000) }}
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="col-sm-6">
-                    <mat-form-field class="flex">
-                        <mat-label>{{ 'GLOBAL.periodo' | translate }}</mat-label>
-                        <input matInput placeholder="{{ 'GLOBAL.placeholder_periodo' | translate }}"
-                            formControlName="periodo" class="form-control"
-                            name="periodo" required type="number">
-                        <mat-error *ngIf="getControl('periodo').invalid">
-                            {{ getErrorMessage(getControl('periodo'), 'periodo', 1, 3) }}
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+    <form [formGroup]="periodoForm" (ngSubmit)="onSubmit()">
+        <div fxLayout="row">
+            <div fxFlex="50">
+                <mat-form-field style="width: 90%;">
+                    <mat-label>{{ 'GLOBAL.ano' | translate }}</mat-label>
+                    <input matInput placeholder="{{ 'GLOBAL.placeholder_ano' | translate }}"
+                        formControlName="year" class="form-control"
+                        name="year" required type="number">
+                    <mat-error *ngIf="getControl('year').invalid">
+                        {{ getErrorMessage(getControl('year'), 'ano', 1948, 3000) }}
+                    </mat-error>
+                </mat-form-field>
             </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <mat-form-field class="flex">
-                        <mat-label>{{ 'GLOBAL.fecha_inicio' | translate }}</mat-label>
-                        <input matInput [matDatepicker]="pickerFechaInicio" placeholder="{{ 'GLOBAL.placeholder_fecha_inicio' | translate }}"
-                            formControlName="fechaInicio" class="form-control"
-                            name="fechaInicio" required>
-                        <mat-datepicker-toggle matSuffix [for]="pickerFechaInicio"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerFechaInicio></mat-datepicker>
-                        <mat-error *ngIf="getControl('fechaInicio').invalid">
-                            {{ 'GLOBAL.error_fecha_inicio' | translate }}
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="col-sm-6">
-                    <mat-form-field class="flex">
-                        <mat-label>{{ 'GLOBAL.fecha_fin' | translate }}</mat-label>
-                        <input matInput [matDatepicker]="pickerFechaFin" placeholder="{{ 'GLOBAL.placeholder_fecha_fin' | translate }}"
-                            formControlName="fechaFin" class="form-control"
-                            name="fechaFin" required>
-                        <mat-datepicker-toggle matSuffix [for]="pickerFechaFin"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerFechaFin></mat-datepicker>
-                        <mat-error *ngIf="getControl('fechaFin').invalid || periodoForm.hasError('fechaFinMayorQueInicio')">
-                            {{ periodoForm.hasError('fechaFinMayorQueInicio') ? ('GLOBAL.error_fecha_fin_menor_fecha_inicio' | translate) : ('GLOBAL.error_fecha_fin' | translate) }}
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+            <div fxFlex="50">
+                <mat-form-field style="width: 90%;">
+                    <mat-label>{{ 'GLOBAL.periodo' | translate }}</mat-label>
+                    <input matInput placeholder="{{ 'GLOBAL.placeholder_periodo' | translate }}"
+                        formControlName="periodo" class="form-control"
+                        name="periodo" required type="number">
+                    <mat-error *ngIf="getControl('periodo').invalid">
+                        {{ getErrorMessage(getControl('periodo'), 'periodo', 1, 3) }}
+                    </mat-error>
+                </mat-form-field>
             </div>
+        </div>
+        <div fxLayout="row">
+            <div fxFlex="50">
+                <mat-form-field style="width: 90%;">
+                    <mat-label>{{ 'GLOBAL.fecha_inicio' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="pickerFechaInicio" placeholder="{{ 'GLOBAL.placeholder_fecha_inicio' | translate }}"
+                        formControlName="fechaInicio" class="form-control"
+                        name="fechaInicio" required>
+                    <mat-datepicker-toggle matSuffix [for]="pickerFechaInicio"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFechaInicio></mat-datepicker>
+                    <mat-error *ngIf="getControl('fechaInicio').invalid">
+                        {{ 'GLOBAL.error_fecha_inicio' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50">
+                <mat-form-field style="width: 90%;">
+                    <mat-label>{{ 'GLOBAL.fecha_fin' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="pickerFechaFin" placeholder="{{ 'GLOBAL.placeholder_fecha_fin' | translate }}"
+                        formControlName="fechaFin" class="form-control"
+                        name="fechaFin" required>
+                    <mat-datepicker-toggle matSuffix [for]="pickerFechaFin"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFechaFin></mat-datepicker>
+                    <mat-error *ngIf="getControl('fechaFin').invalid || periodoForm.hasError('fechaFinMayorQueInicio')">
+                        {{ periodoForm.hasError('fechaFinMayorQueInicio') ? ('GLOBAL.error_fecha_fin_menor_fecha_inicio' | translate) : ('GLOBAL.error_fecha_fin' | translate) }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
 
-            <div class="row">
-                <div class="col-12 ml-auto">
-                    <button class="float-right" mat-button type="submit">{{ 'GLOBAL.guardar' | translate }} </button>
-                </div>
+        <div fxLayout="row">
+            <div fxFlex="100" style="text-align: center;">
+                <button mat-button class="btn btn-success btn-sm" type="submit">{{ 'GLOBAL.guardar' | translate }} </button>
             </div>
-        </form>
-    </fieldset>
-</div>
+        </div>
+    </form>
+</fieldset>

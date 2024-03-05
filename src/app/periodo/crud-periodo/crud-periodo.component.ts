@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Periodo } from '../../../data/models/periodo';
 import { ParametrosService } from '../../../data/parametros.service';
-import { PopUpManager } from '../../managers/popUpManager';
+import { PopUpManager } from '../../managers/popup-manager';
 import * as moment from 'moment';
 
 @Component({
@@ -87,18 +87,22 @@ export class CrudPeriodoComponent implements OnInit {
     };
   }
 
-  getControl(name: string) {
+  getControl(name: string): AbstractControl {
     return this.periodoForm.get(name);
   }
 
-  getErrorMessage(control: FormControl, name: string, min: number, max: number) {
+  getErrorMessage(control: FormControl, name: string, min: number, max: number): string {
     return control.hasError('required') ? this.translate.instant('GLOBAL.error_' + name) :
       control.hasError('min') ? this.translate.instant('GLOBAL.err_min') + min :
       control.hasError('max') ? this.translate.instant('GLOBAL.err_max') + max :
             '';
   }
 
-  onSubmit() {
+  onSubmit(): void {
+    if (this.periodoForm.invalid) {
+      return;
+    }
+
     let title = this.periodo_id == null ? 'GLOBAL.registrar' : 'GLOBAL.actualizar';
     let message = this.periodo_id == null ? 'periodo.seguro_continuar_registrar_periodo' : 'periodo.seguro_actualizar_periodo';
     this.popUpManager
@@ -130,10 +134,11 @@ export class CrudPeriodoComponent implements OnInit {
       });
   }
 
-  registrar() {
+  registrar(): void {
     this.parametrosService
       .post('periodo', this.infoPeriodo)
       .subscribe(res => {
+        console.log(res);
         this.infoPeriodo = <Periodo>res['Data'];
         this.eventChange.emit(true);
         window.location.href = '#/pages/periodo/list-periodo';
@@ -143,7 +148,7 @@ export class CrudPeriodoComponent implements OnInit {
       });
   }
 
-  actualizar() {
+  actualizar(): void {
     this.parametrosService
     .put('periodo', this.infoPeriodo)
     .subscribe(res => {

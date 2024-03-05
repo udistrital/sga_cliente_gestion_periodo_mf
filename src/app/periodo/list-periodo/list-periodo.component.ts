@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild  } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ParametrosService } from '../../../data/parametros.service';
 import { Periodo } from '../../../data/models/periodo';
@@ -9,7 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTabGroup } from '@angular/material/tabs';
 import { HttpErrorResponse } from '@angular/common/http';
 import * as moment from 'moment';
-import { PopUpManager } from 'src/app/managers/popUpManager';
+import { PopUpManager } from 'src/app/managers/popup-manager';
 
 @Component({
   selector: 'list-periodo',
@@ -31,20 +30,18 @@ export class ListPeriodoComponent implements OnInit {
 
   dataSource: MatTableDataSource<Periodo>;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   displayedColumns: string[] = ['Year', 'Ciclo', 'Descripcion', 'CodigoAbreviacion', 'Activo', 'InicioVigencia', 'FinVigencia', 'acciones'];
   nombresColumnas = []
   columnasFechas = ['InicioVigencia', 'FinVigencia']
   paginatorLabels;
 
-  @ViewChild('tabGroup', { static: true }) tabGroup: MatTabGroup;
+  @ViewChild('tabGroup', { static: false }) tabGroup: MatTabGroup;
 
   constructor(
     private translate: TranslateService,
-    private router: Router,
-    private route: ActivatedRoute,
     private parametrosService: ParametrosService,
     private popUpManager: PopUpManager,
   ) {
@@ -56,10 +53,6 @@ export class ListPeriodoComponent implements OnInit {
     this.nombresColumnas["InicioVigencia"] = "GLOBAL.fecha_inicio";
     this.nombresColumnas["FinVigencia"] = "GLOBAL.fecha_fin";
     this.nombresColumnas["acciones"] = "GLOBAL.acciones";
-
-    this.paginatorLabels = {
-      itemsPerPageLabel: this.translate.instant('periodo.items_pagina')
-    };
 
     this.loadData();
     this.loadAno();
@@ -89,7 +82,15 @@ export class ListPeriodoComponent implements OnInit {
         res => {
           const r = <any>res;
           if (res !== null && r.Status === '200') {
-            this.year = <any[]>res['Data'];
+            let year = <any[]>res['Data'];
+            let conjunto: Set<any> = new Set();
+            year.forEach(function (value) {
+              conjunto.add(value.Year);
+            });
+            let listaSinRepetidos: number[] = Array.from(conjunto);
+            this.year = listaSinRepetidos.map(numero => {
+              return { Year: numero };
+            });
           }
         },
         (error: HttpErrorResponse) => {
