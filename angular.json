@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "outputPath": "dist/sga-gestionar-periodo-mf",
+            "outputPath": "dist/",
             "index": "src/index.html",
             "main": "src/main.single-spa.ts",
             "polyfills": [
@@ -38,13 +38,12 @@
               "path": "extra-webpack.config.js",
               "libraryName": "sga-gestionar-periodo-mf",
               "libraryTarget": "umd"
-            },
-            "deployUrl": "http://localhost:4205/"
+            }
           },
           "configurations": {
             "production": {
               "optimization":true,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": false,
               "namedChunks": false,
               "aot": true,
@@ -59,7 +58,7 @@
             },
             "development": {
               "optimization": true,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": false,
               "namedChunks": false,
               "aot": true,
@@ -73,7 +72,7 @@
               ]
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
