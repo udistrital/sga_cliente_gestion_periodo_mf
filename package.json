@@ -10,7 +10,7 @@
     "build:single-spa:sga-gestionar-periodo-mf": "ng build sga-gestionar-periodo-mf --configuration production",
     "serve:single-spa:sga-gestionar-periodo-mf": "ng s --project sga-gestionar-periodo-mf --disable-host-check --port 4205 --live-reload false",
     "build:prod": "npm run build --aot --configuration=production",
-    "build:dev": "npm run build --aot --configuration=development"
+    "build:test": "npm run build --aot --configuration=development"
   },
   "private": true,
   "dependencies": {
