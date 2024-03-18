@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { EmptyRouteComponent } from "./empty-route/empty-route.component";
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'empty-route',
     component: EmptyRouteComponent
@@ -15,11 +15,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    //useHash: true,
-    // //enableTracing: true,
-    //initialNavigation: 'disabled'
-  })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
   providers: [{ provide: APP_BASE_HREF, useValue: "/periodo/" }],
 })
