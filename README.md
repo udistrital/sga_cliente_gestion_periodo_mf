@@ -9,7 +9,7 @@ Cliente para la gestión de periodo, parte del Sistema de Gestión Académica. E
 - [Angular](https://angular.io/docs) 16.2.0
   - Incluye Animations, Common, Compiler, Core, Forms, Platform-Browser, Platform-Browser-Dynamic, Router
 - [Angular Material](https://material.angular.io/) 16.2.14
-- [ngx-translate](http://www.ngx-translate.com/) 15.0.0
+- [ngx-translate](https://github.com/ngx-translate/core) 15.0.0
   - Incluye ngx-translate Http Loader
 - [Moment.js](https://momentjs.com/docs/) 2.30.1
 - [ngx-fx-layout](https://www.npmjs.com/package/ngx-fx-layout) 2.0.4
