@@ -71,7 +71,7 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ],
-              "deployUrl": "https://spaparceltesting.000webhostapp.com/"
+              "deployUrl": "https://pruebassgagestionperiodo.portaloas.udistrital.edu.co/"
             },
             "local": {
               "deployUrl": "http://localhost:4205/"
