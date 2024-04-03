@@ -17,6 +17,6 @@ export const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [{ provide: APP_BASE_HREF, useValue: "/periodo/" }],
+  providers: [{ provide: APP_BASE_HREF, useValue: "/periodos/" }],
 })
 export class AppRoutingModule {}
