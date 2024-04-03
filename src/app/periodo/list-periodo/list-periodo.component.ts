@@ -17,7 +17,6 @@ import { PopUpManager } from 'src/app/managers/popup-manager';
 })
 export class ListPeriodoComponent implements OnInit {
   uid: number;
-
   info_periodo: Periodo;
   year = [];
   periodo = [];
@@ -29,6 +28,7 @@ export class ListPeriodoComponent implements OnInit {
   @Output() eventChange = new EventEmitter();
 
   dataSource: MatTableDataSource<Periodo>;
+  matAccordionStep = -1;
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
@@ -317,5 +317,17 @@ export class ListPeriodoComponent implements OnInit {
     }
 
     return formatedValue;
+  }
+
+  setStep(index: number) {
+    this.matAccordionStep = index;
+  }
+
+  nextStep() {
+    this.matAccordionStep++;
+  }
+
+  prevStep() {
+    this.matAccordionStep--;
   }
 }
