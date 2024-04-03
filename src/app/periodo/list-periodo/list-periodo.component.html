@@ -51,20 +51,25 @@
                     </ng-container>
 
                     <ng-container *ngIf="columna === 'acciones'">
-                      <button
-                        mat-icon-button
-                        matTooltip="{{ 'GLOBAL.editar' | translate }}"
-                        (click)="onEdit(fila)"
-                      >
-                        <mat-icon>edit_outline</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        matTooltip="{{ 'GLOBAL.eliminar' | translate }}"
-                        (click)="onDelete(fila)"
-                      >
-                        <mat-icon>delete_outline</mat-icon>
-                      </button>
+                      <div style="min-width: 6rem;">
+                        <button
+                          mat-mini-fab
+                          color="accent"
+                          matTooltip="{{ 'GLOBAL.editar' | translate }}"
+                          (click)="onEdit(fila)"
+                        >
+                          <mat-icon>edit_outline</mat-icon>
+                        </button>
+                        <button
+                          style="margin-left: 0.4rem"
+                          mat-mini-fab
+                          color="warn"
+                          matTooltip="{{ 'GLOBAL.eliminar' | translate }}"
+                          (click)="onDelete(fila)"
+                        >
+                          <mat-icon>delete_outline</mat-icon>
+                        </button>
+                      </div>
                     </ng-container>
                   </td>
                 </ng-container>
