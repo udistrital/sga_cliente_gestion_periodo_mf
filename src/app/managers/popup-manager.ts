@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import Swal, { SweetAlertIcon, SweetAlertOptions } from 'sweetalert2';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { SweetAlertIcon, SweetAlertOptions } from 'sweetalert2';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -8,8 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 export class PopUpManager {
     constructor(private translate: TranslateService) { }
 
-    confirmColor: string = '#3085d6';
-    cancelColor: string = '#aaa';
+    // confirmColor: string = '#3085d6';
+    // cancelColor: string = '#aaa';
 
     public showAlert(status: string | HTMLElement | JQuery, text: string): void {
         Swal.fire({
@@ -17,8 +18,8 @@ export class PopUpManager {
             title: status,
             text: text,
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-            confirmButtonColor: this.confirmColor,
-            cancelButtonColor: this.cancelColor
+            // confirmButtonColor: this.confirmColor,
+            // cancelButtonColor: this.cancelColor
         });
     }
 
@@ -28,7 +29,7 @@ export class PopUpManager {
             title: this.translate.instant('GLOBAL.operacion_exitosa'),
             text: text,
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-            confirmButtonColor: this.confirmColor,
+            // confirmButtonColor: this.confirmColor,
         });
     }
 
@@ -38,7 +39,7 @@ export class PopUpManager {
             title: this.translate.instant('GLOBAL.error'),
             text: text,
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-            confirmButtonColor: this.confirmColor,
+            // confirmButtonColor: this.confirmColor,
         });
     }
 
@@ -50,8 +51,8 @@ export class PopUpManager {
             showCancelButton: true,
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
             cancelButtonText: this.translate.instant('GLOBAL.cancelar'),
-            confirmButtonColor: this.confirmColor,
-            cancelButtonColor: this.cancelColor
+            // confirmButtonColor: this.confirmColor,
+            // cancelButtonColor: this.cancelColor
         };
         return Swal.fire(options);
     }
@@ -65,8 +66,8 @@ export class PopUpManager {
             allowOutsideClick: !cancelar,
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
             cancelButtonText: this.translate.instant('GLOBAL.cancelar'),
-            confirmButtonColor: this.confirmColor,
-            cancelButtonColor: this.cancelColor
+            // confirmButtonColor: this.confirmColor,
+            // cancelButtonColor: this.cancelColor
         };
         return Swal.fire(opt);
     }
@@ -79,8 +80,8 @@ export class PopUpManager {
             allowOutsideClick: !cancelar,
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
             cancelButtonText: this.translate.instant('GLOBAL.cancelar'),
-            confirmButtonColor: this.confirmColor,
-            cancelButtonColor: this.cancelColor,
+            // confirmButtonColor: this.confirmColor,
+            // cancelButtonColor: this.cancelColor,
             preConfirm: () => {
                 const results = {};
                 form.ids.forEach((id: string) => {
