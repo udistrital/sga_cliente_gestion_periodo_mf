@@ -24,6 +24,9 @@ Cliente para la gestión de periodo, parte del Sistema de Gestión Académica. E
 
 
 
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+
 
 ### Variables de Entorno
 
