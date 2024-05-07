@@ -44,7 +44,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { FlexLayoutModule } from 'ngx-fx-layout';
 
 @NgModule({
   imports: [
@@ -87,7 +86,6 @@ import { FlexLayoutModule } from 'ngx-fx-layout';
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
     PeriodoRoutingModule,
   ],
   declarations: [
