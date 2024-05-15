@@ -10,11 +10,11 @@ const routes: Routes = [
     component: PeriodoComponent,
     children: [
       {
-        path: '',
+        path: 'lista',
         component: ListPeriodoComponent,
       },
       {
-        path: 'crud-periodo',
+        path: 'crear',
         component: CrudPeriodoComponent,
       },
     ],
