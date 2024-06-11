@@ -246,26 +246,6 @@ export class ListPeriodoComponent implements OnInit {
     this.activetab();
   }
 
-  onDelete(data): void {
-    this.popUpManager
-      .showConfirmAlert(
-        this.translate.instant('periodo.seguro_eliminar_periodo'),
-        this.translate.instant('GLOBAL.eliminar')
-      )
-      .then((willDelete) => {
-        if (willDelete.value) {
-          this.parametrosService.delete('periodo', data).subscribe((res) => {
-            if (res !== null) {
-              this.loadData();
-              this.popUpManager.showSuccessAlert(
-                this.translate.instant('periodo.periodo_eliminado')
-              );
-            }
-          });
-        }
-      });
-  }
-
   activetab(): void {
     this.tabGroup.selectedIndex = this.tabGroup.selectedIndex == 0 ? 1 : 0;
   }
@@ -350,26 +330,34 @@ export class ListPeriodoComponent implements OnInit {
 @Component({
   selector: 'dialog-overview-example-dialog',
   template: `
-    <h2 mat-dialog-title>{{ 'Detalles del Periodo' }}</h2>
+    <h2 mat-dialog-title>{{ 'periodo.detalles_periodo' | translate }}</h2>
     <mat-dialog-content>
-      <p>{{ 'GLOBAL.ano' | translate }}: {{ data.Year }}</p>
-      <p>{{ 'GLOBAL.periodo' | translate }}: {{ data.Ciclo }}</p>
-      <p>{{ 'GLOBAL.descripcion' | translate }}: {{ data.Descripcion }}</p>
       <p>
-        {{ 'GLOBAL.codigo_abreviacion' | translate }}:
+        <strong>{{ 'GLOBAL.ano' | translate }}:</strong> {{ data.Year }}
+      </p>
+      <p>
+        <strong>{{ 'GLOBAL.periodo' | translate }}:</strong> {{ data.Ciclo }}
+      </p>
+      <p>
+        <strong>{{ 'GLOBAL.descripcion' | translate }}:</strong>
+        {{ data.Descripcion }}
+      </p>
+      <p>
+        <strong>{{ 'GLOBAL.codigo_abreviacion' | translate }}:</strong>
         {{ data.CodigoAbreviacion }}
       </p>
       <p>
-        {{ 'GLOBAL.fecha_inicio' | translate }}:
+        <strong>{{ 'GLOBAL.fecha_inicio' | translate }}:</strong>
         {{ data.InicioVigencia | date : 'dd/MM/yyyy' }}
       </p>
       <p>
-        {{ 'GLOBAL.fecha_fin' | translate }}:
+        <strong>{{ 'GLOBAL.fecha_fin' | translate }}:</strong>
         {{ data.FinVigencia | date : 'dd/MM/yyyy' }}
       </p>
     </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close>{{ 'Cerrar' }}</button>
+
+    <mat-dialog-actions style="display: flex; justify-content: center;">
+      <button mat-flat-button mat-dialog-close color="primary">{{ 'GLOBAL.cerrar' | translate }}</button>
     </mat-dialog-actions>
   `,
 })
