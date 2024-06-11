@@ -43,6 +43,7 @@
         "eliminar": "Eliminar"
     },
     "periodo": {
+        "titulo_gestion_periodo": "Gestión de períodos académicos",
         "seguro_actualizar_periodo": "¿Está seguro de actualizar este período?",
         "periodo_actualizado": "Período actualizado",
         "seguro_continuar_registrar_periodo": "¿Está seguro de registrar este período?",
@@ -73,7 +74,9 @@
         "tooltip_crear": "Crear periodo",
         "tooltip_cancelar": "Cancelar",
         "tooltip_guargar": "Guardar",
-        "select_periodo": "Seleccionar periodo"
+        "select_periodo": "Seleccionar periodo",
+        "habilitar_periodo": "Habilitar periodo",
+        "deshabilitar_periodo": "Deshabilitar periodo"
     },
     "paginator": {
         "items_pagina": "Elementos por página"

@@ -138,7 +138,6 @@ export class CrudPeriodoComponent implements OnInit {
     this.parametrosService
       .post('periodo', this.infoPeriodo)
       .subscribe(res => {
-        console.log(res);
         this.infoPeriodo = <Periodo>res['Data'];
         this.eventChange.emit(true);
         window.location.href = '#/pages/periodo/list-periodo';

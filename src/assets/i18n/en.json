@@ -42,6 +42,7 @@
         "eliminar": "Delete"
     },
     "periodo": {
+        "titulo_gestion_periodo": "Period Management Academic",
         "seguro_actualizar_periodo": "Are you sure you update this period?",
         "periodo_actualizado": "Updated period",
         "seguro_continuar_registrar_periodo": "Are you sure to register this period?",
@@ -72,7 +73,10 @@
         "tooltip_crear": "Create period",
         "tooltip_cancelar": "Cancel",
         "tooltip_guargar": "Save",
-        "select_periodo": "Select period"
+        "select_periodo": "Select period",
+        "habilitar_periodo": "Enable period",
+        "deshabilitar_periodo": "Disable period"
+        
     },
     "paginator": {
         "items_pagina": "Item per page"
