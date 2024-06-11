@@ -86,10 +86,6 @@
                           <mat-icon style="color: var(--others-accent);">edit_outline</mat-icon>
                           <span>{{ "GLOBAL.editar" | translate }}</span>
                         </button>
-                        <button mat-menu-item (click)="onDelete(fila)">
-                          <mat-icon style="color: var(--warning-base);">delete_outline</mat-icon>
-                          <span>{{ "GLOBAL.eliminar" | translate }}</span>
-                        </button> 
                       </mat-menu>
                     </ng-container>
                   </td>
@@ -133,7 +129,7 @@
 </mat-card>
 
 <ng-template #dialogTemplate let-data>
-  <h2 mat-dialog-title>{{ "Detalles del Periodo" }}</h2>
+  <h2 mat-dialog-title>{{ "periodo.detalles_periodo" | translate }}</h2>
   <mat-dialog-content>
     <p>{{ "GLOBAL.ano" | translate }}: {{ data.Year }}</p>
     <p>{{ "GLOBAL.periodo" | translate }}: {{ data.Ciclo }}</p>
