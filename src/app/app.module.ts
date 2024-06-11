@@ -26,6 +26,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ParametrosService } from 'src/data/parametros.service';
 import { EmptyRouteComponent } from './empty-route/empty-route.component';
 import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
+import { DialogOverviewExampleDialog } from './periodo/list-periodo/list-periodo.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl + 'assets/i18n/', '.json');
@@ -34,7 +35,8 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    EmptyRouteComponent
+    EmptyRouteComponent,
+    DialogOverviewExampleDialog
   ],
   imports: [
     MatTabsModule,

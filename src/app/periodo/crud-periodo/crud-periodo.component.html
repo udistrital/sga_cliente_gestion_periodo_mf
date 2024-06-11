@@ -4,8 +4,8 @@
     </mat-card-header>
     <mat-card-content>
         <form [formGroup]="periodoForm" (ngSubmit)="onSubmit()">
-            <div class="responsive-form">
-                <div class="form-item one-third-width">
+            <div class="form-grid2">
+                <div class="form-col1">
                     <mat-form-field class="form-field">
                         <mat-label>{{ 'GLOBAL.ano' | translate }}</mat-label>
                         <input matInput placeholder="{{ 'GLOBAL.placeholder_ano' | translate }}"
@@ -16,7 +16,7 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-                <div class="form-item one-third-width">
+                <div class="form-col1">
                     <mat-form-field class="form-field">
                         <mat-label>{{ 'GLOBAL.periodo' | translate }}</mat-label>
                         <input matInput placeholder="{{ 'GLOBAL.placeholder_periodo' | translate }}"
@@ -27,7 +27,7 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-                <div class="form-item one-third-width">
+                <div class="form-col1">
                     <mat-form-field class="form-field">
                         <mat-label>{{ 'GLOBAL.fecha_inicio' | translate }}</mat-label>
                         <input matInput [matDatepicker]="pickerFechaInicio" placeholder="{{ 'GLOBAL.placeholder_fecha_inicio' | translate }}"
@@ -40,7 +40,7 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-                <div class="form-item one-third-width">
+                <div class="form-col1">
                     <mat-form-field class="form-field">
                         <mat-label>{{ 'GLOBAL.fecha_fin' | translate }}</mat-label>
                         <input matInput [matDatepicker]="pickerFechaFin" placeholder="{{ 'GLOBAL.placeholder_fecha_fin' | translate }}"

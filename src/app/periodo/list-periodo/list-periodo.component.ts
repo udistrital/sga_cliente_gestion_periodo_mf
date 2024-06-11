@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild  } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+  Inject,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ParametrosService } from '../../../data/parametros.service';
 import { Periodo } from '../../../data/models/periodo';
@@ -7,6 +14,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTabGroup } from '@angular/material/tabs';
 import { HttpErrorResponse } from '@angular/common/http';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import * as moment from 'moment';
 import { PopUpManager } from 'src/app/managers/popup-manager';
 
@@ -33,9 +45,18 @@ export class ListPeriodoComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
-  displayedColumns: string[] = ['Year', 'Ciclo', 'Descripcion', 'CodigoAbreviacion', 'Activo', 'InicioVigencia', 'FinVigencia', 'acciones'];
-  nombresColumnas = []
-  columnasFechas = ['InicioVigencia', 'FinVigencia']
+  displayedColumns: string[] = [
+    'Year',
+    'Ciclo',
+    'Descripcion',
+    'CodigoAbreviacion',
+    'Activo',
+    'InicioVigencia',
+    'FinVigencia',
+    'acciones',
+  ];
+  nombresColumnas = [];
+  columnasFechas = ['InicioVigencia', 'FinVigencia'];
   paginatorLabels;
 
   @ViewChild('tabGroup', { static: false }) tabGroup: MatTabGroup;
@@ -44,15 +65,16 @@ export class ListPeriodoComponent implements OnInit {
     private translate: TranslateService,
     private parametrosService: ParametrosService,
     private popUpManager: PopUpManager,
+    public dialog: MatDialog
   ) {
-    this.nombresColumnas["Year"] = "GLOBAL.ano";
-    this.nombresColumnas["Ciclo"] = "GLOBAL.periodo";
-    this.nombresColumnas["Descripcion"] = "GLOBAL.descripcion";
-    this.nombresColumnas["CodigoAbreviacion"] = "GLOBAL.codigo_abreviacion";
-    this.nombresColumnas["Activo"] = "GLOBAL.activo";
-    this.nombresColumnas["InicioVigencia"] = "GLOBAL.fecha_inicio";
-    this.nombresColumnas["FinVigencia"] = "GLOBAL.fecha_fin";
-    this.nombresColumnas["acciones"] = "GLOBAL.acciones";
+    this.nombresColumnas['Year'] = 'GLOBAL.ano';
+    this.nombresColumnas['Ciclo'] = 'GLOBAL.periodo';
+    this.nombresColumnas['Descripcion'] = 'GLOBAL.descripcion';
+    this.nombresColumnas['CodigoAbreviacion'] = 'GLOBAL.codigo_abreviacion';
+    this.nombresColumnas['Activo'] = 'GLOBAL.activo';
+    this.nombresColumnas['InicioVigencia'] = 'GLOBAL.fecha_inicio';
+    this.nombresColumnas['FinVigencia'] = 'GLOBAL.fecha_fin';
+    this.nombresColumnas['acciones'] = 'GLOBAL.acciones';
 
     this.loadData();
     this.loadAno();
@@ -64,10 +86,20 @@ export class ListPeriodoComponent implements OnInit {
 
   loadData(): void {
     this.parametrosService
-      .get('periodo?query=CodigoAbreviacion:PA&limit=0&sortby=Year,Ciclo&order=desc')
-      .subscribe(res => {
+      .get(
+        'periodo?query=CodigoAbreviacion:PA&limit=0&sortby=Activo,Year,Ciclo&order=desc'
+      )
+      .subscribe((res) => {
         if (res !== null) {
           const data = <any[]>res['Data'];
+          data.forEach((item) => {
+            item.searchField = `${item.Year} ${item.Ciclo} ${
+              item.Descripcion
+            } ${item.CodigoAbreviacion} ${item.InicioVigencia} ${
+              item.FinVigencia
+            } ${item.Activo ? 'activo' : 'inactivo'}`;
+            item.combinedYearCycle = `${item.Year}-${item.Ciclo}`;
+          });
           this.dataSource = new MatTableDataSource(data);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -77,9 +109,11 @@ export class ListPeriodoComponent implements OnInit {
 
   loadAno() {
     this.parametrosService
-      .get('periodo?query=CodigoAbreviacion:PA&fields=Year&sortby=Year&order=desc')
+      .get(
+        'periodo?query=CodigoAbreviacion:PA&fields=Year&sortby=Year&order=desc'
+      )
       .subscribe(
-        res => {
+        (res) => {
           const r = <any>res;
           if (res !== null && r.Status === '200') {
             let year = <any[]>res['Data'];
@@ -88,25 +122,24 @@ export class ListPeriodoComponent implements OnInit {
               conjunto.add(value.Year);
             });
             let listaSinRepetidos: number[] = Array.from(conjunto);
-            this.year = listaSinRepetidos.map(numero => {
+            this.year = listaSinRepetidos.map((numero) => {
               return { Year: numero };
             });
           }
         },
         (error: HttpErrorResponse) => {
           this.popUpManager.showErrorAlert(
-            this.translate.instant('ERROR.' + error.status),
+            this.translate.instant('ERROR.' + error.status)
           );
-        },
+        }
       );
   }
 
   capturarAno() {
-    // Pasamos el valor seleccionado a la variable verSeleccion
     if (this.opcionSeleccionadoAno == null) {
       this.popUpManager.showAlert(
         this.translate.instant('GLOBAL.atencion'),
-        this.translate.instant('periodo.seleccione_ano'),
+        this.translate.instant('periodo.seleccione_ano')
       );
     } else {
       this.verSeleccionAno = '' + this.opcionSeleccionadoAno['Year'];
@@ -119,10 +152,10 @@ export class ListPeriodoComponent implements OnInit {
       .get(
         'periodo?query=Year:' +
           this.verSeleccionAno +
-          ',CodigoAbreviacion:PA&fields=Ciclo&sortby=Ciclo&order=asc',
+          ',CodigoAbreviacion:PA&fields=Ciclo&sortby=Ciclo&order=asc'
       )
       .subscribe(
-        res => {
+        (res) => {
           const r = <any>res;
           if (res !== null && r.Status === '200') {
             this.periodo = <any[]>res['Data'];
@@ -130,9 +163,9 @@ export class ListPeriodoComponent implements OnInit {
         },
         (error: HttpErrorResponse) => {
           this.popUpManager.showErrorAlert(
-            this.translate.instant('ERROR.' + error.status),
+            this.translate.instant('ERROR.' + error.status)
           );
-        },
+        }
       );
   }
 
@@ -140,7 +173,7 @@ export class ListPeriodoComponent implements OnInit {
     if (this.opcionSeleccionadoPeriodo == null) {
       this.popUpManager.showAlert(
         this.translate.instant('GLOBAL.atencion'),
-        this.translate.instant('periodo.seleccione_ano'),
+        this.translate.instant('periodo.seleccione_ano')
       );
     } else {
       this.verSeleccionPeriodo = this.opcionSeleccionadoPeriodo['Ciclo'];
@@ -154,10 +187,10 @@ export class ListPeriodoComponent implements OnInit {
         'periodo?query=Year:' +
           this.verSeleccionAno +
           ',Ciclo:' +
-          this.verSeleccionPeriodo,
+          this.verSeleccionPeriodo
       )
       .subscribe(
-        res => {
+        (res) => {
           const r = <any>res;
           if (res !== null && r.Status === '200') {
             this.info_periodo = <Periodo>(<any[]>res['Data'])[0];
@@ -165,78 +198,40 @@ export class ListPeriodoComponent implements OnInit {
         },
         (error: HttpErrorResponse) => {
           this.popUpManager.showErrorAlert(
-            this.translate.instant('ERROR.' + error.status),
+            this.translate.instant('ERROR.' + error.status)
           );
-        },
+        }
       );
   }
 
-  ActivarPeriodo() {
-    if (this.info_periodo == null) {
-      this.popUpManager.showAlert(
-        this.translate.instant('GLOBAL.atencion'),
-        this.translate.instant('periodo.seleccione_periodo'),
-      );
-    } else {
-      if (this.info_periodo.Activo === true) {
-        this.popUpManager.showAlert(
-          this.translate.instant('GLOBAL.atencion'),
-          this.translate.instant('periodo.habilitado'),
-        );
-      } else {
-        this.popUpManager
-          .showConfirmAlert(this.translate.instant('periodo.periodo_habilitar'))
-          .then(ok => {
-            if (ok.value) {
-              this.info_periodo.Activo = true;
-              this.parametrosService
-                .put('periodo', this.info_periodo)
-                .subscribe(res => {
-                  this.eventChange.emit(true);
-                  this.loadData();
-                  this.popUpManager.showSuccessAlert(
-                    this.translate.instant('periodo.periodo_habilitado'),
-                  );
-                });
-            }
+  togglePeriodo(periodo: Periodo) {
+    const activar = !periodo.Activo;
+    const mensaje = activar
+      ? 'periodo.periodo_habilitar'
+      : 'periodo.periodo_deshabilitar';
+    const accion = activar
+      ? 'periodo.periodo_habilitado'
+      : 'periodo.periodo_deshabilitado';
+
+    this.popUpManager
+      .showConfirmAlert(this.translate.instant(mensaje))
+      .then((ok) => {
+        if (ok.value) {
+          periodo.Activo = activar;
+          this.parametrosService.put('periodo', periodo).subscribe((res) => {
+            this.eventChange.emit(true);
+            this.loadData();
+            this.popUpManager.showSuccessAlert(this.translate.instant(accion));
           });
-      }
-    }
+        }
+      });
   }
 
-  DeshabilitarPeriodo() {
-    if (this.info_periodo == null) {
-      this.popUpManager.showAlert(
-        this.translate.instant('GLOBAL.atencion'),
-        this.translate.instant('periodo.seleccione_periodo'),
-      );
-    } else {
-      if (this.info_periodo.Activo === false) {
-        this.popUpManager.showAlert(
-          this.translate.instant('GLOBAL.atencion'),
-          this.translate.instant('periodo.deshabilitado'),
-        );
-      } else {
-        this.popUpManager
-          .showConfirmAlert(
-            this.translate.instant('periodo.periodo_deshabilitar'),
-          )
-          .then(ok => {
-            if (ok.value) {
-              this.info_periodo.Activo = false;
-              this.parametrosService
-                .put('periodo', this.info_periodo)
-                .subscribe(res => {
-                  this.eventChange.emit(true);
-                  this.loadData();
-                  this.popUpManager.showSuccessAlert(
-                    this.translate.instant('periodo.periodo_deshabilitado'),
-                  );
-                });
-            }
-          });
-      }
-    }
+  viewDetails(periodo: Periodo) {
+    this.dialog.open(DialogOverviewExampleDialog, {
+      width: '380px',
+      data: periodo,
+    });
   }
 
   ngOnInit() {}
@@ -255,21 +250,18 @@ export class ListPeriodoComponent implements OnInit {
     this.popUpManager
       .showConfirmAlert(
         this.translate.instant('periodo.seguro_eliminar_periodo'),
-        this.translate.instant('GLOBAL.eliminar'),
+        this.translate.instant('GLOBAL.eliminar')
       )
-      .then(willDelete => {
+      .then((willDelete) => {
         if (willDelete.value) {
-          this.parametrosService
-            .delete('periodo', data)
-            .subscribe(res => {
-              console.log(res);
-              if (res !== null) {
-                this.loadData();
-                this.popUpManager.showSuccessAlert(
-                  this.translate.instant('periodo.periodo_eliminado'),
-                );
-              }
-            });
+          this.parametrosService.delete('periodo', data).subscribe((res) => {
+            if (res !== null) {
+              this.loadData();
+              this.popUpManager.showSuccessAlert(
+                this.translate.instant('periodo.periodo_eliminado')
+              );
+            }
+          });
         }
       });
   }
@@ -294,8 +286,26 @@ export class ListPeriodoComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    filterValue = filterValue.trim().toLowerCase(); // Remove whitespace and convert to lowercase
+
+    this.dataSource.filterPredicate = (data: Periodo, filter: string) => {
+      const searchString = `${data.Year} ${data.Ciclo} ${data.Descripcion} ${
+        data.CodigoAbreviacion
+      } ${data.InicioVigencia} ${data.FinVigencia} ${
+        data.Activo ? 'activo' : 'inactivo'
+      }`.toLowerCase();
+      const formattedDate = `${moment(data.InicioVigencia).format(
+        'DD-MM-YYYY'
+      )} ${moment(data.FinVigencia).format('DD-MM-YYYY')}`.toLowerCase();
+      const combinedYearCycle = `${data.Year}-${data.Ciclo}`.toLowerCase();
+
+      return (
+        searchString.includes(filter) ||
+        formattedDate.includes(filter) ||
+        combinedYearCycle.includes(filter)
+      );
+    };
+
     this.dataSource.filter = filterValue;
   }
 
@@ -304,13 +314,18 @@ export class ListPeriodoComponent implements OnInit {
     let formatedValue: any;
     switch (tipo) {
       case 'boolean':
-        formatedValue = valor == true ? this.translate.instant('GLOBAL.activo') : this.translate.instant('GLOBAL.inactivo');
+        formatedValue =
+          valor == true
+            ? this.translate.instant('GLOBAL.activo')
+            : this.translate.instant('GLOBAL.inactivo');
         break;
 
       case 'string':
-        formatedValue = this.columnasFechas.includes(columna) ? moment(valor).format('DD-MM-YYYY') : valor;
+        formatedValue = this.columnasFechas.includes(columna)
+          ? moment(valor).format('DD-MM-YYYY')
+          : valor;
         break;
-      
+
       default:
         formatedValue = valor;
         break;
@@ -329,5 +344,42 @@ export class ListPeriodoComponent implements OnInit {
 
   prevStep() {
     this.matAccordionStep--;
+  }
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  template: `
+    <h2 mat-dialog-title>{{ 'Detalles del Periodo' }}</h2>
+    <mat-dialog-content>
+      <p>{{ 'GLOBAL.ano' | translate }}: {{ data.Year }}</p>
+      <p>{{ 'GLOBAL.periodo' | translate }}: {{ data.Ciclo }}</p>
+      <p>{{ 'GLOBAL.descripcion' | translate }}: {{ data.Descripcion }}</p>
+      <p>
+        {{ 'GLOBAL.codigo_abreviacion' | translate }}:
+        {{ data.CodigoAbreviacion }}
+      </p>
+      <p>
+        {{ 'GLOBAL.fecha_inicio' | translate }}:
+        {{ data.InicioVigencia | date : 'dd/MM/yyyy' }}
+      </p>
+      <p>
+        {{ 'GLOBAL.fecha_fin' | translate }}:
+        {{ data.FinVigencia | date : 'dd/MM/yyyy' }}
+      </p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>{{ 'Cerrar' }}</button>
+    </mat-dialog-actions>
+  `,
+})
+export class DialogOverviewExampleDialog {
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: Periodo
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }
