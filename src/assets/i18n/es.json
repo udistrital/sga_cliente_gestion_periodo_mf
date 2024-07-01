@@ -40,16 +40,18 @@
         "ultima": "Última página",
         "nombre": "Nombre",
         "editar": "Editar",
-        "eliminar": "Eliminar"
+        "eliminar": "Eliminar",
+        "cerrar": "Cerrar"
     },
     "periodo": {
+        "titulo_gestion_periodo": "Gestión de periodos académicos",
         "seguro_actualizar_periodo": "¿Está seguro de actualizar este período?",
         "periodo_actualizado": "Período actualizado",
         "seguro_continuar_registrar_periodo": "¿Está seguro de registrar este período?",
         "periodo_creado": "Período creado",
         "seleccione_ano": "Por favor seleccione primero el año a realizar la operación",
         "seleccione_periodo": "Por favor primero seleccione el período a realizar la operación",
-        "habilitado": "Este período ya está habilitado",
+        "habilitado": "Este periodo ya está habilitado",
         "periodo_habilitar": "¿Está seguro de habilitar este período?",
         "periodo_habilitado": "Período habilitado!",
         "se_habilita": "Habilitado",
@@ -73,7 +75,10 @@
         "tooltip_crear": "Crear periodo",
         "tooltip_cancelar": "Cancelar",
         "tooltip_guargar": "Guardar",
-        "select_periodo": "Seleccionar periodo"
+        "select_periodo": "Seleccionar periodo",
+        "habilitar_periodo": "Habilitar periodo",
+        "deshabilitar_periodo": "Deshabilitar periodo",
+        "detalles_periodo": "Detalles periodo"
     },
     "paginator": {
         "items_pagina": "Elementos por página"

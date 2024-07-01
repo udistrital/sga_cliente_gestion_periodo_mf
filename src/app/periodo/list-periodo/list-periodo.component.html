@@ -1,4 +1,9 @@
 <mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      {{ "periodo.titulo_gestion_periodo" | translate }}
+    </mat-card-title>
+  </mat-card-header>
   <mat-card-content>
     <mat-tab-group #tabGroup>
       <mat-tab
@@ -6,20 +11,16 @@
         label="{{ 'GLOBAL.lista' | translate | uppercase }}"
       >
         <mat-card>
-          <mat-card-header> </mat-card-header>
+          <mat-card-header></mat-card-header>
           <mat-card-content>
-            <div class="responsive-form margin-y">
-              <div class="form-item one-third-width">
-                <mat-form-field class="form-field">
-                  <mat-label>{{ "GLOBAL.buscar" | translate }}</mat-label>
-                  <input
-                    matInput
-                    (keyup)="applyFilter($event.target.value)"
-                    placeholder="{{ 'GLOBAL.buscar' | translate }}"
-                  />
-                </mat-form-field>
-              </div>
-            </div>
+            <mat-form-field class="form-field">
+              <mat-label>{{ "GLOBAL.buscar" | translate }}</mat-label>
+              <input
+                matInput
+                (keyup)="applyFilter($event.target.value)"
+                placeholder="{{ 'GLOBAL.buscar' | translate }}"
+              />
+            </mat-form-field>
             <div class="table">
               <table
                 mat-table
@@ -46,30 +47,46 @@
                     (mouseover)="hoverIndex = i"
                     (mouseout)="hoverIndex = null"
                   >
-                    <ng-container *ngIf="columna !== 'acciones'">
+                    <ng-container *ngIf="columna === 'Activo'">
+                      <div
+                        class="status-indicator"
+                        [ngClass]="{
+                          active: fila.Activo,
+                          inactive: !fila.Activo
+                        }"
+                      >
+                        {{ fila.Activo ? "Activo" : "Inactivo" }}
+                      </div>
+                    </ng-container>
+                    <ng-container
+                      *ngIf="columna !== 'acciones' && columna !== 'Activo'"
+                    >
                       {{ formatValue(columna, fila[columna]) }}
                     </ng-container>
-
-                    <ng-container *ngIf="columna === 'acciones'">
-                      <div style="min-width: 6rem;">
-                        <button
-                          mat-mini-fab
-                          color="accent"
-                          matTooltip="{{ 'GLOBAL.editar' | translate }}"
-                          (click)="onEdit(fila)"
-                        >
-                          <mat-icon>edit_outline</mat-icon>
+                    <ng-container *ngIf="columna === 'acciones'" stickyEnd>
+                      <button mat-icon-button color="accent" [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="viewDetails(fila)" >
+                          <mat-icon >info_outline</mat-icon>
+                          <span>{{ "Ver Detalles" }}</span>
                         </button>
-                        <button
-                          style="margin-left: 0.4rem"
-                          mat-mini-fab
-                          color="warn"
-                          matTooltip="{{ 'GLOBAL.eliminar' | translate }}"
-                          (click)="onDelete(fila)"
-                        >
-                          <mat-icon>delete_outline</mat-icon>
+                        <button mat-menu-item (click)="togglePeriodo(fila)">
+                          <mat-icon
+                          [ngStyle]="{ color: fila.Activo ? 'var(--danger-base)' : 'var(--success-base)' }"
+                          >{{
+                            fila.Activo ? "cancel" : "check_circle"
+                          }}</mat-icon>
+                          <span>{{
+                            fila.Activo ? "Desactivar" : "Activar"
+                          }}</span>
                         </button>
-                      </div>
+                        <button mat-menu-item color="accent" (click)="onEdit(fila)">
+                          <mat-icon style="color: var(--others-accent);">edit_outline</mat-icon>
+                          <span>{{ "GLOBAL.editar" | translate }}</span>
+                        </button>
+                      </mat-menu>
                     </ng-container>
                   </td>
                 </ng-container>
@@ -88,82 +105,6 @@
             </div>
           </mat-card-content>
         </mat-card>
-
-        <mat-accordion>
-          <mat-expansion-panel
-            [expanded]="matAccordionStep === 0"
-            (opened)="setStep(0)"
-            hideToggle
-          >
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{ "periodo.titulo" | translate }}
-              </mat-panel-title>
-              <mat-panel-description>
-                {{ "periodo.subtitulo" | translate }}
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <p class="margin-y">
-              {{ "periodo.explicacion" | translate }}
-            </p>
-
-            <div class="responsive-form">
-              <div class="form-item one-third-width">
-                <mat-form-field style="width: 90%" class="form-field">
-                  <mat-label>{{ "GLOBAL.ano" | translate }} :</mat-label>
-                  <mat-select
-                    [(ngModel)]="opcionSeleccionadoAno"
-                    (ngModelChange)="capturarAno()"
-                  >
-                    <mat-option>
-                      {{ "periodo.seleccion_ano" | translate }}</mat-option
-                    >
-                    <mat-option *ngFor="let item of year" [value]="item">
-                      {{ item.Year }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="form-item one-third-width">
-                <mat-form-field style="width: 90%" class="form-field">
-                  <mat-label>{{ "GLOBAL.periodo" | translate }} :</mat-label>
-                  <mat-select
-                    [(ngModel)]="opcionSeleccionadoPeriodo"
-                    (ngModelChange)="capturarPeriodo()"
-                  >
-                    <mat-option>{{
-                      "periodo.seleccion_periodo" | translate
-                    }}</mat-option>
-                    <mat-option *ngFor="let item of periodo" [value]="item">
-                      {{ item.Ciclo }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <div class="container-bottons">
-              <button
-                mat-flat-button
-                color="accent"
-                class="boton-primary"
-                (click)="ActivarPeriodo()"
-                type="button"
-              >
-                {{ "periodo.buton_habilitar" | translate }}
-              </button>
-              <button
-                mat-flat-button
-                color="warn"
-                class="boton-secondary"
-                (click)="DeshabilitarPeriodo()"
-                type="button"
-              >
-                {{ "periodo.buton_deshabilitar" | translate }}
-              </button>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
       </mat-tab>
       <mat-tab
         class="tab-bold"
@@ -186,3 +127,27 @@
     </mat-tab-group>
   </mat-card-content>
 </mat-card>
+
+<ng-template #dialogTemplate let-data>
+  <h2 mat-dialog-title>{{ "periodo.detalles_periodo" | translate }}</h2>
+  <mat-dialog-content>
+    <p>{{ "GLOBAL.ano" | translate }}: {{ data.Year }}</p>
+    <p>{{ "GLOBAL.periodo" | translate }}: {{ data.Ciclo }}</p>
+    <p>{{ "GLOBAL.descripcion" | translate }}: {{ data.Descripcion }}</p>
+    <p>
+      {{ "GLOBAL.codigo_abreviacion" | translate }}:
+      {{ data.CodigoAbreviacion }}
+    </p>
+    <p>
+      {{ "GLOBAL.fecha_inicio" | translate }}:
+      {{ data.InicioVigencia | date : "dd/MM/yyyy" }}
+    </p>
+    <p>
+      {{ "GLOBAL.fecha_fin" | translate }}:
+      {{ data.FinVigencia | date : "dd/MM/yyyy" }}
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>{{ "Cerrar" }}</button>
+  </mat-dialog-actions>
+</ng-template>
