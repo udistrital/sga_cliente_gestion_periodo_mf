@@ -44,6 +44,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { AuthGuard } from 'src/_guards/auth.guard';
 
 @NgModule({
   imports: [
@@ -94,6 +95,7 @@ import { MatTableModule } from '@angular/material/table';
   providers: [
     PopUpManager,
     ParametrosService,
+    AuthGuard,
     {
       provide: MatPaginatorIntl,
       useClass: CustomMatPaginatorIntl
