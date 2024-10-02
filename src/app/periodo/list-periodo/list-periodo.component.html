@@ -1,0 +1,153 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      {{ "periodo.titulo_gestion_periodo" | translate }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-tab-group #tabGroup>
+      <mat-tab
+        class="tab-bold"
+        label="{{ 'GLOBAL.lista' | translate | uppercase }}"
+      >
+        <mat-card>
+          <mat-card-header></mat-card-header>
+          <mat-card-content>
+            <mat-form-field class="form-field">
+              <mat-label>{{ "GLOBAL.buscar" | translate }}</mat-label>
+              <input
+                matInput
+                (keyup)="applyFilter($event.target.value)"
+                placeholder="{{ 'GLOBAL.buscar' | translate }}"
+              />
+            </mat-form-field>
+            <div class="table">
+              <table
+                mat-table
+                [dataSource]="dataSource"
+                matSort
+                class="mat-elevation-z8"
+                style="width: 100%"
+              >
+                <ng-container
+                  *ngFor="let columna of displayedColumns"
+                  [matColumnDef]="columna"
+                >
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ nombresColumnas[columna] | translate }}
+                  </th>
+                  <td
+                    mat-cell
+                    *matCellDef="let fila; let i = index"
+                    [ngClass]="{
+                      'row-par': i % 2 === 0,
+                      'row-impar': i % 2 !== 0,
+                      'row-hover': hoverIndex === i
+                    }"
+                    (mouseover)="hoverIndex = i"
+                    (mouseout)="hoverIndex = null"
+                  >
+                    <ng-container *ngIf="columna === 'Activo'">
+                      <div
+                        class="status-indicator"
+                        [ngClass]="{
+                          active: fila.Activo,
+                          inactive: !fila.Activo
+                        }"
+                      >
+                        {{ fila.Activo ? "Activo" : "Inactivo" }}
+                      </div>
+                    </ng-container>
+                    <ng-container
+                      *ngIf="columna !== 'acciones' && columna !== 'Activo'"
+                    >
+                      {{ formatValue(columna, fila[columna]) }}
+                    </ng-container>
+                    <ng-container *ngIf="columna === 'acciones'" stickyEnd>
+                      <button mat-icon-button color="accent" [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="viewDetails(fila)" >
+                          <mat-icon >info_outline</mat-icon>
+                          <span>{{ "Ver Detalles" }}</span>
+                        </button>
+                        <button mat-menu-item (click)="togglePeriodo(fila)">
+                          <mat-icon
+                          [ngStyle]="{ color: fila.Activo ? 'var(--danger-base)' : 'var(--success-base)' }"
+                          >{{
+                            fila.Activo ? "cancel" : "check_circle"
+                          }}</mat-icon>
+                          <span>{{
+                            fila.Activo ? "Desactivar" : "Activar"
+                          }}</span>
+                        </button>
+                        <button mat-menu-item color="accent" (click)="onEdit(fila)">
+                          <mat-icon style="color: var(--others-accent);">edit_outline</mat-icon>
+                          <span>{{ "GLOBAL.editar" | translate }}</span>
+                        </button>
+                      </mat-menu>
+                    </ng-container>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let fila; columns: displayedColumns"
+                ></tr>
+              </table>
+              <mat-paginator
+                [pageSize]="5"
+                [pageSizeOptions]="[]"
+                showFirstLastButtons
+              ></mat-paginator>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+      <mat-tab
+        class="tab-bold"
+        label="{{ 'GLOBAL.formulario' | translate | uppercase }}"
+      >
+        <crud-periodo
+          [periodo_id]="uid"
+          (eventChange)="onChange($event)"
+        ></crud-periodo>
+        <button
+          mat-flat-button
+          color="warn"
+          class="margin-y"
+          (click)="activetab()"
+        >
+          <mat-icon>keyboard_arrow_left</mat-icon>
+          {{ "GLOBAL.regresar" | translate }}
+        </button>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #dialogTemplate let-data>
+  <h2 mat-dialog-title>{{ "periodo.detalles_periodo" | translate }}</h2>
+  <mat-dialog-content>
+    <p>{{ "GLOBAL.ano" | translate }}: {{ data.Year }}</p>
+    <p>{{ "GLOBAL.periodo" | translate }}: {{ data.Ciclo }}</p>
+    <p>{{ "GLOBAL.descripcion" | translate }}: {{ data.Descripcion }}</p>
+    <p>
+      {{ "GLOBAL.codigo_abreviacion" | translate }}:
+      {{ data.CodigoAbreviacion }}
+    </p>
+    <p>
+      {{ "GLOBAL.fecha_inicio" | translate }}:
+      {{ data.InicioVigencia | date : "dd/MM/yyyy" }}
+    </p>
+    <p>
+      {{ "GLOBAL.fecha_fin" | translate }}:
+      {{ data.FinVigencia | date : "dd/MM/yyyy" }}
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>{{ "Cerrar" }}</button>
+  </mat-dialog-actions>
+</ng-template>
