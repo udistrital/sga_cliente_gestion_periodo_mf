@@ -26,3 +26,7 @@
   padding: 1rem;
   border-radius: 0.25rem;
 }
+
+:host ::ng-deep .period-tabs.read-only .mat-mdc-tab-header {
+  display: none;
+}

@@ -44,6 +44,7 @@
         "cerrar": "Cerrar"
     },
     "periodo": {
+        "titulo_listado_periodo": "Listado de periodos académicos",
         "titulo_gestion_periodo": "Gestión de periodos académicos",
         "seguro_actualizar_periodo": "¿Está seguro de actualizar este período?",
         "periodo_actualizado": "Período actualizado",
