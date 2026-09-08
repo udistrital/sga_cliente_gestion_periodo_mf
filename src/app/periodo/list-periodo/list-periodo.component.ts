@@ -13,7 +13,20 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTabGroup } from '@angular/material/tabs';
+import {
+  DateAdapter,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter,
+} from '@angular/material/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
@@ -26,9 +39,16 @@ import { PopUpManager } from 'src/app/managers/popup-manager';
   selector: 'list-periodo',
   templateUrl: './list-periodo.component.html',
   styleUrls: ['./list-periodo.component.scss'],
+  providers: [
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-CO' },
+  ],
 })
 export class ListPeriodoComponent implements OnInit {
   uid: number;
+  canManage = false;
+  periodoForm: FormGroup;
+  formPeriodo: Periodo;
   info_periodo: Periodo;
   year = [];
   periodo = [];
@@ -65,8 +85,11 @@ export class ListPeriodoComponent implements OnInit {
     private translate: TranslateService,
     private parametrosService: ParametrosService,
     private popUpManager: PopUpManager,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder
   ) {
+    this.canManage = this.route.snapshot.data['canManage'] === true;
     this.nombresColumnas['Year'] = 'GLOBAL.ano';
     this.nombresColumnas['Ciclo'] = 'GLOBAL.periodo';
     this.nombresColumnas['Descripcion'] = 'GLOBAL.descripcion';
@@ -234,35 +257,161 @@ export class ListPeriodoComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.periodoForm = this.formBuilder.group(
+      {
+        year: new FormControl('', [
+          Validators.required,
+          Validators.min(1948),
+          Validators.max(3000),
+        ]),
+        periodo: new FormControl('', [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(3),
+        ]),
+        fechaInicio: new FormControl('', [Validators.required]),
+        fechaFin: new FormControl('', [Validators.required]),
+      },
+      { validator: this.fechaFinMayorQueInicio }
+    );
+
+    this.periodoForm.get('fechaInicio').valueChanges.subscribe((fechaInicio) => {
+      this.periodoForm
+        .get('fechaFin')
+        .setValidators([
+          Validators.required,
+          this.fechaFinValidator(fechaInicio),
+        ]);
+      this.periodoForm.get('fechaFin').updateValueAndValidity();
+    });
+  }
 
   onEdit(data): void {
     this.uid = data.Id;
-    this.activetab();
+    this.loadPeriodoForm();
+    this.tabGroup.selectedIndex = 1;
   }
 
-  onCreate(event): void {
-    this.uid = 0;
-    this.activetab();
+  closeEdit(): void {
+    this.tabGroup.selectedIndex = 0;
+    this.uid = undefined;
+    this.formPeriodo = undefined;
+    this.periodoForm.reset();
   }
 
-  activetab(): void {
-    this.tabGroup.selectedIndex = this.tabGroup.selectedIndex == 0 ? 1 : 0;
+  loadPeriodoForm(): void {
+    this.parametrosService.get('periodo/' + this.uid).subscribe((res) => {
+      if (res !== null) {
+        this.formPeriodo = <Periodo>res['Data'];
+        this.periodoForm.patchValue({
+          year: this.formPeriodo.Year,
+          periodo: this.formPeriodo.Ciclo,
+          fechaInicio: new Date(this.formPeriodo.InicioVigencia),
+          fechaFin: new Date(this.formPeriodo.FinVigencia),
+        });
+      }
+    });
   }
 
-  selectTab(event): void {
-    if (event.tabTitle === this.translate.instant('GLOBAL.lista')) {
-      this.tabGroup.selectedIndex = 1;
-    } else {
-      this.tabGroup.selectedIndex = 2;
+  fechaFinMayorQueInicio(control: FormGroup): { [key: string]: boolean } | null {
+    const fechaInicio = control.get('fechaInicio').value;
+    const fechaFin = control.get('fechaFin').value;
+
+    return fechaInicio && fechaFin && fechaInicio > fechaFin
+      ? { fechaFinMayorQueInicio: true }
+      : null;
+  }
+
+  fechaFinValidator(fechaInicio: string): any {
+    return (control: FormControl) => {
+      const fechaFin = control.value;
+      return fechaFin && fechaInicio && fechaInicio > fechaFin
+        ? { fechaFinMayorQueInicio: true }
+        : null;
+    };
+  }
+
+  getControl(name: string): AbstractControl {
+    return this.periodoForm.get(name);
+  }
+
+  getErrorMessage(
+    control: AbstractControl,
+    name: string,
+    min: number,
+    max: number
+  ): string {
+    return control.hasError('required')
+      ? this.translate.instant('GLOBAL.error_' + name)
+      : control.hasError('min')
+      ? this.translate.instant('GLOBAL.err_min') + min
+      : control.hasError('max')
+      ? this.translate.instant('GLOBAL.err_max') + max
+      : '';
+  }
+
+  onSubmit(): void {
+    if (this.periodoForm.invalid) {
+      return;
     }
+
+    const creating = this.uid == null;
+    const title = creating ? 'GLOBAL.registrar' : 'GLOBAL.actualizar';
+    const message = creating
+      ? 'periodo.seguro_continuar_registrar_periodo'
+      : 'periodo.seguro_actualizar_periodo';
+
+    this.popUpManager
+      .showConfirmAlert(
+        this.translate.instant(message),
+        this.translate.instant(title)
+      )
+      .then((ok) => {
+        if (ok.value) {
+          this.formPeriodo = this.formPeriodo || new Periodo();
+          this.formPeriodo.Year = this.periodoForm.value.year;
+          this.formPeriodo.Ciclo = '' + this.periodoForm.value.periodo;
+          this.formPeriodo.Nombre = `${this.formPeriodo.Year}-${this.formPeriodo.Ciclo}`;
+          this.formPeriodo.Descripcion =
+            'Periodo académico ' + this.formPeriodo.Nombre;
+          this.formPeriodo.CodigoAbreviacion = 'PA';
+          this.formPeriodo.Activo = true;
+          this.formPeriodo.InicioVigencia =
+            moment(this.periodoForm.value.fechaInicio).format('YYYY-MM-DD') +
+            'T10:00:00Z';
+          this.formPeriodo.FinVigencia =
+            moment(this.periodoForm.value.fechaFin).format('YYYY-MM-DD') +
+            'T10:00:00Z';
+          this.formPeriodo.AplicacionId = 41;
+
+          if (creating) {
+            this.registrarPeriodo();
+          } else {
+            this.actualizarPeriodo();
+          }
+        }
+      });
   }
 
-  onChange(event) {
-    if (event) {
+  registrarPeriodo(): void {
+    this.parametrosService.post('periodo', this.formPeriodo).subscribe(() => {
       this.loadData();
-      this.activetab();
-    }
+      this.closeEdit();
+      this.popUpManager.showSuccessAlert(
+        this.translate.instant('periodo.periodo_creado')
+      );
+    });
+  }
+
+  actualizarPeriodo(): void {
+    this.parametrosService.put('periodo', this.formPeriodo).subscribe(() => {
+      this.loadData();
+      this.closeEdit();
+      this.popUpManager.showSuccessAlert(
+        this.translate.instant('periodo.periodo_actualizado')
+      );
+    });
   }
 
   applyFilter(filterValue: string) {

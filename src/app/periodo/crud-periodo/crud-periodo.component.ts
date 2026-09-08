@@ -51,6 +51,7 @@ export class CrudPeriodoComponent implements OnInit {
         });
     } else {
       this.infoPeriodo = undefined;
+      this.periodoForm?.reset();
     }
   }
 
@@ -139,8 +140,8 @@ export class CrudPeriodoComponent implements OnInit {
       .post('periodo', this.infoPeriodo)
       .subscribe(res => {
         this.infoPeriodo = <Periodo>res['Data'];
+        this.periodoForm.reset();
         this.eventChange.emit(true);
-        window.location.href = '#/pages/periodo/list-periodo';
         this.popUpManager.showSuccessAlert(
           this.translate.instant('periodo.periodo_creado'),
         );
@@ -153,7 +154,6 @@ export class CrudPeriodoComponent implements OnInit {
     .subscribe(res => {
       this.loadPeriodo();
       this.eventChange.emit(true);
-      window.location.href = '#/pages/periodo/list-periodo';
       this.popUpManager.showSuccessAlert(
         this.translate.instant('periodo.periodo_actualizado'),
       );

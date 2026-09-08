@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListPeriodoComponent } from './list-periodo/list-periodo.component';
-import { CrudPeriodoComponent } from './crud-periodo/crud-periodo.component';
 import { PeriodoComponent } from './periodo.component';
 import { AuthGuard } from 'src/_guards/auth.guard';
 
@@ -15,11 +14,13 @@ const routes: Routes = [
         path: 'lista',
         canActivate: [AuthGuard],
         component: ListPeriodoComponent,
+        data: { canManage: false },
       },
       {
         path: 'crear',
         canActivate: [AuthGuard],
-        component: CrudPeriodoComponent,
+        component: ListPeriodoComponent,
+        data: { canManage: true },
       },
     ],
   },
@@ -34,5 +35,4 @@ export class PeriodoRoutingModule {}
 export const routedComponents = [
   PeriodoComponent,
   ListPeriodoComponent,
-  CrudPeriodoComponent,
 ];

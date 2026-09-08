@@ -1,6 +1,5 @@
 import { PeriodoRoutingModule, routedComponents } from './periodo-routing.module';
 import { NgModule } from '@angular/core';
-import { CrudPeriodoComponent } from './crud-periodo/crud-periodo.component';
 import { ParametrosService } from '../../data/parametros.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -103,7 +102,6 @@ import { AuthGuard } from 'src/_guards/auth.guard';
   ],
   exports: [
     PeriodoComponent,
-    CrudPeriodoComponent,
     ListPeriodoComponent
   ],
 })
