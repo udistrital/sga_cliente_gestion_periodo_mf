@@ -43,7 +43,8 @@
     "cerrar": "Close"
   },
   "periodo": {
-    "titulo_gestion_periodo": "Period Management Academic",
+    "titulo_listado_periodo": "Academic Period Listing",
+    "titulo_gestion_periodo": "Academic Period Management",
     "seguro_actualizar_periodo": "Are you sure you update this period?",
     "periodo_actualizado": "Updated period",
     "seguro_continuar_registrar_periodo": "Are you sure to register this period?",
