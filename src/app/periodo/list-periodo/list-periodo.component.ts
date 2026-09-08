@@ -13,6 +13,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTabGroup } from '@angular/material/tabs';
+import {
+  DateAdapter,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter,
+} from '@angular/material/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -34,6 +39,10 @@ import { PopUpManager } from 'src/app/managers/popup-manager';
   selector: 'list-periodo',
   templateUrl: './list-periodo.component.html',
   styleUrls: ['./list-periodo.component.scss'],
+  providers: [
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-CO' },
+  ],
 })
 export class ListPeriodoComponent implements OnInit {
   uid: number;
